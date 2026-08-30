@@ -33,10 +33,6 @@ namespace TownOfHost
     {
         public static List<string> ChatHistory = new();
         public static Dictionary<CustomRoles, string> roleCommands;
-        ///<summary>
-        /// /tp o で退避する前の座標を記憶しておくための辞書 (PlayerId → 退避前座標)
-        ///</summary>
-        public static Dictionary<byte, UnityEngine.Vector2> TpCommandSavedPositions = new();
         public static bool Prefix(ChatController __instance)
         {
             __instance.timeSinceLastMessage = 3f;
@@ -67,7 +63,7 @@ namespace TownOfHost
             Logger.Info(text, "SendChat");
             ChatManager.SendMessage(PlayerControl.LocalPlayer, text);
 
-            //"/"から始まるメッセージをコマンドとして扱う
+            //"/"から始まるメッセージは"/cmd"を付けなくてもコマンドとして扱う("/cmd xxx"形式も互換のため引き続き使える)
             var isSlashCommand = text.StartsWith("/");
             if (isSlashCommand) canceled = true;
 
@@ -89,21 +85,16 @@ namespace TownOfHost
                 }
                 return true;
             }
+            //"/cmd xxx"形式なら互換のため先頭の"cmd"を読み飛ばす。"/xxx"ならそのまま使う
+            if (args[0] == "/cmd" && args.Length > 1)
+                args = args.Skip(1).ToArray();
+
             if (GuessManager.GuesserMsg(PlayerControl.LocalPlayer, text)) canceled = true;
             if (args[0].StartsWith("/") is false) args[0] = $"/{args[0]}";
 
-            // ダイス: /1d100 /2d6 /d20 など
-            if (TryRollDice(args[0], PlayerControl.LocalPlayer?.GetRealName() ?? "?", out var diceMsgLocal))
-            {
-                canceled = true;
-                SendMessage(diceMsgLocal);
-                __instance.freeChatField.textArea.Clear();
-                return false;
-            }
-
             switch (args[0])
             {
-                                case "/dump":
+                case "/dump":
                     canceled = true;
                     UtilsOutputLog.DumpLog();
                     break;
@@ -140,15 +131,16 @@ namespace TownOfHost
                     {
                         case "o":
                         case "out":
-                            TpCommandSavedPositions[PlayerControl.LocalPlayer.PlayerId] = PlayerControl.LocalPlayer.transform.position;
-                            PlayerControl.LocalPlayer.RpcSnapToForced(new UnityEngine.Vector2(999f, 999f));
+                            TpCommandState.TpCommandOutPlayers.Add(PlayerControl.LocalPlayer.PlayerId);
+                            PlayerControl.LocalPlayer.RpcSnapToForced(TpCommandState.LobbyTpOutPosition);
                             SendMessage(GetString("TpCommand.Out"), PlayerControl.LocalPlayer.PlayerId);
                             break;
                         case "i":
                         case "in":
-                            if (TpCommandSavedPositions.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out var savedPos))
+                            if (TpCommandState.TpCommandOutPlayers.Contains(PlayerControl.LocalPlayer.PlayerId))
                             {
-                                PlayerControl.LocalPlayer.RpcSnapToForced(savedPos);
+                                TpCommandState.TpCommandOutPlayers.Remove(PlayerControl.LocalPlayer.PlayerId);
+                                PlayerControl.LocalPlayer.RpcSnapToForced(TpCommandState.LobbyTpInPosition);
                                 SendMessage(GetString("TpCommand.In"), PlayerControl.LocalPlayer.PlayerId);
                             }
                             else
@@ -1359,41 +1351,6 @@ namespace TownOfHost
             }
             return !canceled;
         }
-
-        /// <summary>
-        /// /1d100 /2d6 /d20 形式のダイスロール
-        /// </summary>
-        public static bool TryRollDice(string token, string playerName, out string message)
-        {
-            message = null;
-            if (string.IsNullOrEmpty(token)) return false;
-            var m = Regex.Match(token, @"^/(\d*)d(\d+)$", RegexOptions.IgnoreCase);
-            if (!m.Success) return false;
-
-            int count = string.IsNullOrEmpty(m.Groups[1].Value) ? 1 : int.Parse(m.Groups[1].Value);
-            int sides = int.Parse(m.Groups[2].Value);
-            if (count < 1) count = 1;
-            if (count > 50) count = 50;
-            if (sides < 2) sides = 2;
-            if (sides > 1000) sides = 1000;
-
-            var rng = IRandom.Instance;
-            var rolls = new int[count];
-            int total = 0;
-            for (int i = 0; i < count; i++)
-            {
-                rolls[i] = rng.Next(1, sides + 1);
-                total += rolls[i];
-            }
-
-            string detail = count == 1
-                ? $"{rolls[0]}"
-                : string.Join(" + ", rolls) + $" = <b>{total}</b>";
-
-            message = $"🎲 {playerName} のダイス <b>{count}d{sides}</b>\n→ {detail}";
-            return true;
-        }
-
         #region  OnReceiveChat
         public static void OnReceiveChat(PlayerControl player, string text, out bool canceled, bool Isclient = false)
         {
@@ -1405,9 +1362,10 @@ namespace TownOfHost
             canceled = false;
             if (!AmongUsClient.Instance.AmHost)
             {
-                // 非ホスト: コマンドはチャットに出さない（処理はホスト側）
-                if (text.StartsWith("/"))
+                if (text.StartsWith("/cmd"))
+                {
                     canceled = true;
+                }
                 return;
             }
             if ((Isclient && !player.IsModClient()) || (!Isclient && player.IsModClient())) return;
@@ -1420,20 +1378,36 @@ namespace TownOfHost
                 ChatManager.SendMessage(player, text);
             }
 
-            // "/" から始まるメッセージをコマンドとして処理
-            if (!text.StartsWith("/")) return;
+            // /tp と /name はオプションにより /cmd なしでも一般プレイヤーから受け付ける
+            if (args[0].Equals("/tp", StringComparison.OrdinalIgnoreCase) || args[0].Equals("/name", StringComparison.OrdinalIgnoreCase))
+            {
+                // 下で個別処理するのでここでは通す
+            }
+            else if (text.StartsWith("/") && !text.Contains("cmd"))
+            {
+                SendMessage(GetString("Error.CommandFailed"), player.PlayerId);
+            }
+            if (args[0].StartsWith("/cmd") is false
+                && !args[0].Equals("/tp", StringComparison.OrdinalIgnoreCase)
+                && !args[0].Equals("/name", StringComparison.OrdinalIgnoreCase))
+                return;//cmdが無い場合は処理をしない（/tp /name は例外）
 
             if (GuessManager.GuesserMsg(player, text)) { canceled = true; return; }
 
             canceled = true;
 
-            // ダイス: /1d100 /2d6 /d20 など
-            if (TryRollDice(args[0], player.GetRealName(), out var diceMsg))
+            // /cmd 付きの場合は従来通りスキップしてコマンド本体を取り出す
+            if (args[0] == "/cmd" && args.Length > 1)
             {
-                SendMessage(diceMsg);
+                args = args.Skip(1).ToArray();
+                if (args[0].StartsWith("/") is false) args[0] = $"/{args[0]}";
+            }
+            else if (args[0] != "/tp" && args[0] != "/name" && (args[0] != "/cmd" || args.Length <= 1))
+            {
                 return;
             }
 
+            canceled = true;
             switch (args[0])
             {
                 case "/l":
@@ -1586,15 +1560,16 @@ namespace TownOfHost
                     {
                         case "o":
                         case "out":
-                            TpCommandSavedPositions[player.PlayerId] = player.transform.position;
-                            player.RpcSnapToForced(new UnityEngine.Vector2(999f, 999f));
+                            TpCommandState.TpCommandOutPlayers.Add(player.PlayerId);
+                            player.RpcSnapToForced(TpCommandState.LobbyTpOutPosition);
                             SendMessage(GetString("TpCommand.Out"), player.PlayerId);
                             break;
                         case "i":
                         case "in":
-                            if (TpCommandSavedPositions.TryGetValue(player.PlayerId, out var savedPosRemote))
+                            if (TpCommandState.TpCommandOutPlayers.Contains(player.PlayerId))
                             {
-                                player.RpcSnapToForced(savedPosRemote);
+                                TpCommandState.TpCommandOutPlayers.Remove(player.PlayerId);
+                                player.RpcSnapToForced(TpCommandState.LobbyTpInPosition);
                                 SendMessage(GetString("TpCommand.In"), player.PlayerId);
                             }
                             else

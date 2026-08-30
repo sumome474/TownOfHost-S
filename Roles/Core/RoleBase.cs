@@ -529,13 +529,14 @@ public abstract class RoleBase : IDisposable
     public virtual bool? CheckGuess(PlayerControl killer) => true;
 
     /// <summary>
-    /// Host用。
     /// タスクが出来るか。
-    /// falseだとできない。
+    /// falseだとコンソール(タスク)を使用できない。
+    /// デフォルトは HasTasks が False 以外なら true（クルー等はタスク可）。
+    /// インポスター系で個人タスクを許可したい場合は override して true を返す。
     /// [全クライアント]
     /// </summary>
     /// <returns></returns>
-    public virtual bool CanTask() => UtilsTask.HasTasks(PlayerControl.LocalPlayer.Data, false);
+    public virtual bool CanTask() => HasTasks is not HasTask.False;
     /// <summary>
     /// 会議後の置き換え役職の変更。<br/>
     /// 生存中しか適応されない
