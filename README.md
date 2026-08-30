@@ -17,8 +17,8 @@ TOH-Kで起きたバグは本家や他MODには報告しないでまずはkに�
 機能面などを開発者にDMで聞くのは超大迷惑なので基本おやめください。<br>
 
 [本家TOHはこちら](https://github.com/satokazoku/TownOfHost-Pko)<br>
-[TOHKはこちら]((https://github.com/KYMario/TownOfHost-K)<br>
-[役職を借りてるTOHPはこちら]((https://github.com/KYMario/TownOfHost-K)<br>
+[TOHKはこちら](https://github.com/KYMario/TownOfHost-K)<br>
+[役職を借りてるTOHPはこちら](https://github.com/KYMario/TownOfHost-K)<br>
 ## [Wiki](https://github.com/KYMario/TownOfHost-S/wiki)もあるよ!
 
 ## リリース
