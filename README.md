@@ -1,8 +1,6 @@
-# Town Of Host-K
+# Town Of Host-S
 
-[English version here](https://github.com/KYMario/TownOfHost-K/blob/main/README-EN.md)<br>
 
-[![Discord](./Images/TownOfHostK_readme.png)](https://discord.gg/5DPqH8seFq)
 
 <p align="center"><a href="https://github.com/KYMario/TownOfHost-K/releases/"><img src="https://badgen.net/github/release/KYMario/TownOfHost-K"></a></p>
 
@@ -14,19 +12,20 @@
 この Mod はTOHに役職や機能など追加したModです
 TOH-Kで起きたバグは本家や他MODには報告しないでまずはkに報告してください。<br>
 
-また、TOH-Kに関する質問、バグ報告は基本、[DiscordServer](https://discord.gg/5DPqH8seFq)でのみ受け付けております。<br>
+また、TOH-Sに関する質問、バグ報告は基本、[DiscordServer]((https://discord.gg/UvfsdK8UT5)でのみ受け付けております。<br>
 
 機能面などを開発者にDMで聞くのは超大迷惑なので基本おやめください。<br>
 
-[本家TOHはこちら](https://github.com/tukasa0001/TownOfHost)<br>
-
-## [Wiki](https://github.com/KYMario/TownOfHost-K/wiki)もあるよ!
+[本家TOHはこちら](https://github.com/satokazoku/TownOfHost-Pko)<br>
+[TOHKはこちら]((https://github.com/KYMario/TownOfHost-K)<br>
+[役職を借りてるTOHPはこちら]((https://github.com/KYMario/TownOfHost-K)<br>
+## [Wiki](https://github.com/KYMario/TownOfHost-S/wiki)もあるよ!
 
 ## リリース
 AmongUsバージョン : **18.0.0**~<br>
 
-**最新版は[こちら](https://github.com/KYMario/TownOfHost-K/releases/latest)**<br>
-過去バージョンは[こちら](https://github.com/KYMario/TownOfHost-K/releases)<br>
+**最新版は[こちら](https://github.com/KYMario/TownOfHost-S/releases/latest)**<br>
+過去バージョンは[こちら](https://github.com/KYMario/TownOfHost-S/releases)<br>
 
 ## 公開ルームについて
 > [!Note]
@@ -62,7 +61,7 @@ AmongUsバージョン : **18.0.0**~<br>
 <br>
 勧誘部屋に遭遇した場合は勧誘先に無闇に参加せずまずは開発者にお知らせください。厳正に対処いたします。<br>
 
-## TOH-Kでの処罰、利用不可について
+## TOH-Sでの処罰、利用不可について
 v.5.1.61.1以降より[SuperNewRoles](https://github.com/SuperNewRoles/SuperNewRoles/)様等一部のModに搭載されていた<br>
 ブラックリストをTown Of Host-Kでも適応するようにいたしました。<br>
 
@@ -79,7 +78,7 @@ v.5.1.61.1以降より[SuperNewRoles](https://github.com/SuperNewRoles/SuperNewR
 -----------------------------------------------
 
 **【絶対に読むんだ】**<br>
-Town Of Host-Kの利用をもって"処罰に値する利用方法"内で記載されている<br>
+Town Of Host-Sの利用をもって"処罰に値する利用方法"内で記載されている<br>
 行動をしないと誓い,<br>
 処罰に値する利用を行った場合はいかなる場合でも処罰を受け入れるものとします。<br>
 
@@ -92,12 +91,12 @@ Modが使えなくなるよ!<br>
 その処罰に値する利用方法をしないよ！！<br>
 ってことです。
 
-## TownOfHost-Kってなんだい?
-他のAmongUsのModとはまた一味違った、斬新で独特な機能や役職が多いModです。<br>
+## TownOfHost-Sってなんだい?
+他のAmongUsのModとはまた一味違った、斬新で独特な機能や役職、オリジナル役職が多いModです。<br>
 
 HostModなので部屋主のみModを導入すれば、<br>
 参加者はModを導入する必要もカスタムサーバー追加等の面倒な手間なしで<br>
-導入者が部屋を建て、その部屋に入ることでTownOfHost-Kを遊ぶことができます！<br>
+導入者が部屋を建て、その部屋に入ることでTownOfHost-Sを遊ぶことができます！<br>
 
 詳しい仕様などは[Wiki](https://github.com/KYMario/TownOfHost-K/wiki)やゲーム内確認できます<br>
 
@@ -115,7 +114,7 @@ HostModなので部屋主のみModを導入すれば、<br>
 - - [サドンデスモード](https://github.com/KYMario/TownOfHost-K/wiki/サドンデスモード)
 - [かくれんぼ](https://github.com/KYMario/TownOfHost-K/wiki/かくれんぼ)
 - [タスクバトル](https://github.com/KYMario/TownOfHost-K/wiki/タスクバトル)
-
+- [氷鬼](https://github.com/KYMario/TownOfHost-S/wiki/氷鬼)
 </details>
 
 その他機能、変更点などは基本wikiをご覧ください。<br>
@@ -125,31 +124,12 @@ HostModなので部屋主のみModを導入すれば、<br>
 > - [TOHK_DATA\options.txt](#オプションファイル)からポートを設定できます。
 
 #### 外部リンク
-　TownOfHost-K<br>
-　　[Twitter(X)](https://x.com/Tohkserver_k)<br>
+
 
 **TownOfHost-Kの開発者**<br>
-　暇な人 KY/けーわい<br>
-　　[Youtube](https://www.youtube.com/@MTGC_KY)<br>
-　　[Twitter(X)](https://x.com/ky_mario_ky)<br>
-
-　タイガー<br>
-　　[Youtube](https://www.youtube.com/@torataiga-)<br>
-　　[Twitter(X)](https://x.com/TVppJ90s9G2sPkq)<br>
-
-　夜藍<br>
-　　[Youtube](https://www.youtube.com/@Yoran_Furan)<br>
-　　[Twitter(X)](https://x.com/Yoran_FuranOshi)<br>
-
-　ねむa<br>
-　　[Twitter(X)](https://x.com/nemu_adatoomou)<br>
-
-　はろん<br>
-　　[Twitter(X)](https://x.com/HellWeen11)<br>
-
-**TownOfHost-Kのサポーター**<br>
-　りぃりぃ<br>
-　　[Twitter(X)](https://x.com/rixirixi0202)<br>
+　すもめ<br>
+　　[Youtube](https://www.youtube.com/@%E3%81%99%E3%82%82%E3%82%81%E3%81%AE%E3%82%A2%E3%83%A2%E3%82%A2%E3%82%B9mod%E4%BD%9C%E6%88%90%E8%80%85)<br>
+　
 
 ※本家TownOfHost様の開発者はここでは省略させていただきます
 #### クレジット
