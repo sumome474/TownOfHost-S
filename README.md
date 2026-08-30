@@ -12,7 +12,7 @@
 この Mod はTOHに役職や機能など追加したModです
 TOH-Kで起きたバグは本家や他MODには報告しないでまずはkに報告してください。<br>
 
-また、TOH-Sに関する質問、バグ報告は基本、[DiscordServer]((https://discord.gg/UvfsdK8UT5)でのみ受け付けております。<br>
+また、TOH-Sに関する質問、バグ報告は基本、[DiscordServer](https://discord.gg/UvfsdK8UT5)でのみ受け付けております。<br>
 
 機能面などを開発者にDMで聞くのは超大迷惑なので基本おやめください。<br>
 
