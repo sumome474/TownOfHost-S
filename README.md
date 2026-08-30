@@ -1,6 +1,6 @@
 # Town Of Host-S
 
-
+[オリジナル役職の説明はこちら！](https://github.com/sumome474/TownOfHost-S/wiki/オリジナル役職の説明)
 
 <p align="center"><a href="https://github.com/KYMario/TownOfHost-K/releases/"><img src="https://badgen.net/github/release/KYMario/TownOfHost-K"></a></p>
 
