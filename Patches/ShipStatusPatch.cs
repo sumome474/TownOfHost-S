@@ -4,6 +4,7 @@ using System.Linq;
 using HarmonyLib;
 using TownOfHost.Modules;
 using UnityEngine;
+using AmongUs.GameOptions;
 
 namespace TownOfHost
 {
@@ -73,7 +74,7 @@ namespace TownOfHost
     {
         public static bool Prefix(ShipStatus __instance)
         {
-            if (Options.CurrentGameMode is CustomGameMode.HideAndSeek or CustomGameMode.StandardHAS or CustomGameMode.SuddenDeath or CustomGameMode.MurderMystery) return false;
+            if (Options.CurrentGameMode is CustomGameMode.HideAndSeek or CustomGameMode.StandardHAS or CustomGameMode.SuddenDeath or CustomGameMode.MurderMystery or CustomGameMode.IceOni) return false;
             if (Options.CurrentGameMode != CustomGameMode.Standard || SuddenDeathMode.NowSuddenDeathMode) return false;
 
             if (Options.AfterTurnCantCloseDoor.GetBool())
@@ -135,8 +136,6 @@ namespace TownOfHost
         public static void Postfix()
         {
             Logger.CurrentMethod();
-
-            //ホストの役職初期設定はここで行うべき？
         }
     }
     [HarmonyPatch(typeof(GameManager), nameof(GameManager.CheckTaskCompletion))]

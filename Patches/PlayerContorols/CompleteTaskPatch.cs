@@ -36,7 +36,6 @@ namespace TownOfHost
                 UtilsGameLog.AddGameLog("Task", string.Format(Translator.GetString("Taskfin"), UtilsName.GetPlayerColor(pc, true)));
                 return ret;
             }
-
             if (roleClass != null)
             {
                 if (Amnesia.CheckAbility(pc))

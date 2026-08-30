@@ -288,9 +288,9 @@ namespace TownOfHost
             var text = "";
             if (GameStates.IsLobby && Main.IsCs())
             {
-                tpinfo += $"\n/cmd tp o - {GetString("Command.tpo")}";
-                tpinfo += $"\n/cmd tp i - {GetString("Command.tpi")}";
-                tpinfo += $"\n/cmd allplayertp(apt) - {GetString("Command.apt")}";
+                tpinfo += $"\n/tp o - {GetString("Command.tpo")}";
+                tpinfo += $"\n/tp i - {GetString("Command.tpi")}";
+                tpinfo += $"\n/allplayertp(apt) - {GetString("Command.apt")}";
             }
             text = GetString("CommandList")
             + "<size=60%><line-height=1.3pic>";
@@ -298,41 +298,41 @@ namespace TownOfHost
             {
                 //ホスト限定
                 text += $"<size=80%></line-height>\n<#8cffff>【~~~~~~~{GetString("OnlyHost")}~~~~~~~】</color></size><line-height=1.3pic>"
-                + $"\n/cmd rename(r) - {GetString("Command.rename")}"
-                + $"\n/cmd dis - {GetString("Command.dis")}"
-                + $"\n/cmd sw - {GetString("Command.sw")}"
-                + $"\n/cmd forceend(fe) - {GetString("Command.forceend")}"
-                + $"\n/cmd mw - {GetString("Command.mw")}"
-                + $"\n/cmd kf - {GetString("Command.kf")}"
-                + $"\n/cmd addwhite(aw) - {GetString("Command.addwhite")}";
+                + $"\n/rename(r) - {GetString("Command.rename")}"
+                + $"\n/dis - {GetString("Command.dis")}"
+                + $"\n/sw - {GetString("Command.sw")}"
+                + $"\n/forceend(fe) - {GetString("Command.forceend")}"
+                + $"\n/mw - {GetString("Command.mw")}"
+                + $"\n/kf - {GetString("Command.kf")}"
+                + $"\n/addwhite(aw) - {GetString("Command.addwhite")}";
                 //導入者
                 text += $"<size=80%></line-height>\n<#028760>【~~~~~~~{GetString("OnlyClient")}~~~~~~~】</color></size><line-height=1.3pic>"
-                + $"\n/cmd dump - {GetString("Command.dump")}";
+                + $"\n/dump - {GetString("Command.dump")}";
             }
             text
             //全員
             += $"<size=80%></line-height>\n<#918877>【~~~~~~~{GetString("Allplayer")}~~~~~~~】</color></size><line-height=1.3pic>"
-            + $"\n/cmd now(n) - {GetString("Command.now")}"
-            + $"\n/cmd now role(n r) - {GetString("Command.nowrole")}"
-            + $"\n/cmd now set(n s) - {GetString("Command.nowset")}"
-            + $"\n/cmd now w(n w) - {GetString("Command.nowwin")}"
-            + $"\n/cmd h now(h n) - {GetString("Command.h_now")}"
-            + $"\n/cmd h roles(h r ) {GetString("Command.h_roles")}"
-            + $"\n/cmd myrole(m) - {GetString("Command.m")}"
-            + $"\n/cmd meetinginfo(mi,/day) - {GetString("Command.mi")}";
-            if (CustomRolesHelper.CheckGuesser() || CustomRoles.Guesser.IsPresent()) text += $"\n/cmd bt - {GetString("Command.bt")}";
-            if (Options.ImpostorHideChat.GetBool()) text += $"\n/cmd ic - {GetString("Command.impchat")}";
-            if (Options.JackalHideChat.GetBool()) text += $"\n/cmd jc - {GetString("Command.jacchat")}";
-            if (Options.LoversHideChat.GetBool()) text += $"\n/cmd lc - {GetString("Command.LoverChat")}";
-            if (Options.ConnectingHideChat.GetBool()) text += $"\n/cmd cc - {GetString("Command.ConnectingChat")}";
-            if (Options.TwinsHideChat.GetBool()) text += $"\n/cmd tc - {GetString("Command.TwinsChat")}";
+            + $"\n/now(n) - {GetString("Command.now")}"
+            + $"\n/now role(n r) - {GetString("Command.nowrole")}"
+            + $"\n/now set(n s) - {GetString("Command.nowset")}"
+            + $"\n/now w(n w) - {GetString("Command.nowwin")}"
+            + $"\n/h now(h n) - {GetString("Command.h_now")}"
+            + $"\n/h roles(h r ) {GetString("Command.h_roles")}"
+            + $"\n/myrole(m) - {GetString("Command.m")}"
+            + $"\n/meetinginfo(mi,/day) - {GetString("Command.mi")}";
+            if (CustomRolesHelper.CheckGuesser() || CustomRoles.Guesser.IsPresent()) text += $"\n/bt - {GetString("Command.bt")}";
+            if (Options.ImpostorHideChat.GetBool()) text += $"\n/ic - {GetString("Command.impchat")}";
+            if (Options.JackalHideChat.GetBool()) text += $"\n/jc - {GetString("Command.jacchat")}";
+            if (Options.LoversHideChat.GetBool()) text += $"\n/lc - {GetString("Command.LoverChat")}";
+            if (Options.ConnectingHideChat.GetBool()) text += $"\n/cc - {GetString("Command.ConnectingChat")}";
+            if (Options.TwinsHideChat.GetBool()) text += $"\n/tc - {GetString("Command.TwinsChat")}";
             if (GameStates.IsLobby)
             {
-                text += $"\n/cmd lastresult(l) - {GetString("Command.lastresult")}"
-                    + $"\n/cmd killlog(kl) - {GetString("Command.killlog")}"
-                    + $"\n/cmd timer - {GetString("Command.timer")}";
+                text += $"\n/lastresult(l) - {GetString("Command.lastresult")}"
+                    + $"\n/killlog(kl) - {GetString("Command.killlog")}"
+                    + $"\n/timer - {GetString("Command.timer")}";
             }
-            if (Main.UseYomiage.Value) text += $"\n/cmd voice - {GetString("Command.voice")}";
+            if (Main.UseYomiage.Value) text += $"\n/voice - {GetString("Command.voice")}";
 
             SendMessage(text + tpinfo, to);
         }
@@ -468,7 +468,7 @@ namespace TownOfHost
                         case SuffixModes.None:
                             break;
                         case SuffixModes.TOH:
-                            name += $"<size=75%>(<{Main.ModColor}>TOH-K v{Main.PluginShowVersion})</color></size>";
+                            name += $"<size=75%>(<{Main.ModColor}>TOH-S v{Main.PluginShowVersion})</color></size>";
                             break;
                         case SuffixModes.Streaming:
                             name += $"<size=75%>(<{Main.ModColor}>{GetString("SuffixMode.Streaming")})</color></size>";
@@ -524,7 +524,7 @@ namespace TownOfHost
                     case CustomGameMode.SuddenDeath: sb.Append("\r\n").Append(ColorString(GetRoleColor(CustomRoles.Comebacker), GetString("SuddenDeathMode"))); break;
                     case CustomGameMode.MurderMystery: sb.Append("\r\n").Append($"<#1a389c>{GetString("MurderMystery")}"); break;
                 }
-                n = "<line-height=-100%>\n<b></line-height>" + name + $"\n<line-height=-{(sb.Length is 0 ? "200" : "300")}%>\n<size=60%><line-height=0%><{Main.ModColor}>TownOfHost-K <#ffffff>v{Main.PluginShowVersion}<line-height=100%>{sb.ToString()}</size>\n<size=0> ";
+                n = "<line-height=-100%>\n<b></line-height>" + name + $"\n<line-height=-{(sb.Length is 0 ? "200" : "300")}%>\n<size=60%><line-height=0%><{Main.ModColor}>TownOfHost-S <#ffcc00>v{Main.PluginShowVersion}<line-height=100%>{sb.ToString()}</size>\n<size=0> ";
                 if (force)
                     PlayerCatch.AllPlayerControls.DoIf(x => x.name != "Player(Clone)" && x.PlayerId != PlayerControl.LocalPlayer.PlayerId && !x.IsModClient(), x => PlayerControl.LocalPlayer.RpcSetNamePrivate(n, true, x, true));
                 else if (pc.PlayerId != PlayerControl.LocalPlayer.PlayerId)

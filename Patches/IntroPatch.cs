@@ -277,6 +277,16 @@ namespace TownOfHost
                     __instance.ImpostorText.gameObject.SetActive(PlayerCatch.AllPlayerControls.Count() == 1);
                     if (PlayerCatch.AllPlayerControls.Count() == 1) __instance.ImpostorText.text = GetString("TaskRTAInfo");
                     break;
+
+                case CustomRoles.TraitorCrewmate:
+                    // 見た目上はクルー(Engineer)として始まるが、正体はインポスター陣営なので
+                    // 専用のタイトル・キャッチコピーとクルー色→インポスター色のフェードで裏切りを演出する
+                    __instance.TeamTitle.text = UtilsRoleText.GetRoleName(role);
+                    __instance.TeamTitle.color = UtilsRoleText.GetRoleColor(role);
+                    __instance.ImpostorText.gameObject.SetActive(true);
+                    __instance.ImpostorText.text = GetString("TraitorCrewmateInfo");
+                    StartFadeIntro(__instance, Palette.CrewmateBlue, Palette.ImpostorRed, 2000);
+                    break;
             }
             if (SuddenDeathMode.NowSuddenDeathMode)
             {

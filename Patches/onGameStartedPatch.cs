@@ -303,7 +303,12 @@ namespace TownOfHost
                     {
                         if (info.IsDesyncImpostor || role is CustomRoles.Amnesiac || role.IsMadmate() || (role.IsNeutral() && role is not CustomRoles.Egoist) || Options.CurrentGameMode is CustomGameMode.SuddenDeath)
                         {
-                            AssignDesyncRole(role, AllPlayers, senders, rolesMap, BaseRole: info.BaseRoleType.Invoke());
+                            // Desync Impostor はホストも BaseRole(Engineer等) にしないとベント能力が使えない
+                            var baseRole = info.BaseRoleType.Invoke();
+                            var hostBase = (info.IsDesyncImpostor && info.CountType == CountTypes.Impostor)
+                                ? baseRole
+                                : RoleTypes.Crewmate;
+                            AssignDesyncRole(role, AllPlayers, senders, rolesMap, BaseRole: baseRole, hostBaseRole: hostBase);
                         }
                     }
                     MakeDesyncSender(senders, rolesMap);
@@ -321,9 +326,36 @@ namespace TownOfHost
                 }
                 IGameOptions currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
                 int adjustedNumImpostors = GameOptionsManager.Instance.CurrentGameOptions.GetAdjustedNumImpostors(playerInfos.Count);
+                if (Options.CurrentGameMode is CustomGameMode.IceOni)
+                {
+                    // 鬼の人数だけ本物の Impostor。逃げは後でシェリフ方式 Desync。
+                    adjustedNumImpostors = Modules.IceOniMode.GetOniCount();
+                    if (adjustedNumImpostors > playerInfos.Count) adjustedNumImpostors = playerInfos.Count;
+                    if (adjustedNumImpostors < 1) adjustedNumImpostors = 1;
+                    Logger.Info($"氷鬼: バニラImpostor枠={adjustedNumImpostors} (逃げはDesync)", "SelectRoles");
+                }
                 //一応呼ぶ....呼ぶ..
                 RoleManager.Instance.DebugRoleAssignments(playerInfos, ref adjustedNumImpostors);
                 if (CustomRoles.Amnesiac.IsPresent()) adjustedNumImpostors--;
+
+                // Desync Impostor（見た目はCrew/Engineer等だが CountTypes.Impostor の役職）は
+                // AssignDesyncRole で既に割り当て済みで、バニラの Impostor 枠を消費しない。
+                // GetRealCount()(=AssignRoleList上の人数)分だけバニラ割当数を減らす。
+                // これをしないと「設定1なのにインポスターが2人」になる。
+                foreach (var (role, info) in CustomRoleManager.AllRolesInfo)
+                {
+                    if (info == null) continue;
+                    if (!info.IsDesyncImpostor) continue;
+                    if (info.CountType != CountTypes.Impostor) continue;
+                    if (role is CustomRoles.Amnesiac) continue;
+                    var n = role.GetRealCount();
+                    if (n > 0)
+                    {
+                        adjustedNumImpostors -= n;
+                        Logger.Info($"DesyncImpostor枠減算: {role} x{n} → adjustedNumImpostors={adjustedNumImpostors}", "SelectRoles");
+                    }
+                }
+                if (adjustedNumImpostors < 0) adjustedNumImpostors = 0;
 
                 GameManager.Instance.LogicRoleSelection.AssignRolesForTeam(playerInfos, currentGameOptions, RoleTeamTypes.Impostor, adjustedNumImpostors, new Il2CppSystem.Nullable<RoleTypes>(RoleTypes.Impostor));
                 GameManager.Instance.LogicRoleSelection.AssignRolesForTeam(playerInfos, currentGameOptions, RoleTeamTypes.Crewmate, int.MaxValue, new Il2CppSystem.Nullable<RoleTypes>(RoleTypes.Crewmate));
@@ -470,6 +502,11 @@ namespace TownOfHost
 
                 GameEndChecker.SetPredicateToTaskBattle();
             }
+            else if (Options.CurrentGameMode == CustomGameMode.IceOni)
+            {
+                // 名前指定 / ランダムで鬼を決定して割り当て
+                Modules.IceOniMode.ApplyOniAssignment();
+            }
             else
             {
                 foreach (var role in CustomRolesHelper.AllStandardRoles)
@@ -479,7 +516,7 @@ namespace TownOfHost
                     if (role.IsMadmate()) continue;
                     if (role.IsNeutral() && role is not CustomRoles.Egoist) continue;
                     if (role is CustomRoles.Amnesiac) continue;
-                    if (Options.CurrentGameMode is CustomGameMode.SuddenDeath) continue;
+                    if (Options.CurrentGameMode is CustomGameMode.SuddenDeath or CustomGameMode.IceOni) continue;
                     var baseRoleTypes = role.GetRoleTypes() switch
                     {
                         RoleTypes.Impostor => Impostors,
@@ -741,6 +778,8 @@ namespace TownOfHost
                     if (sender.Value.CurrentState != CustomRpcSender.State.InRootMessage)
                         throw new InvalidOperationException("A CustomRpcSender had Invalid State.");
 
+                    // ゾンビでも canOverride は通常どおり（true にすると全員暗転の原因になる）
+                    // 役職の中身は StoragedData 書き換えで正しいので、上書き強制は不要
                     foreach (var pair in StoragedData)
                     {
                         pair.Item1.StartCoroutine(pair.Item1.CoSetRole(pair.Item2, Main.SetRoleOverride && GameModeManager.IsStandardClass()));

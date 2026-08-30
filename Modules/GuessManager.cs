@@ -55,11 +55,13 @@ public static class GuessManager
 
         int operate = 0;
         string[] args = msg.Split(' ');
-        if (args[0] != "/cmd" || args.Length <= 1)
+        //"/"から始まるメッセージは"/cmd"を付けなくてもコマンドとして扱う("/cmd xxx"形式も互換のため引き続き使える)
+        if (!args[0].StartsWith("/")) return false;
+        if (args[0] == "/cmd")
         {
-            return false;
+            if (args.Length <= 1) return false;
+            args = args.Skip(1).ToArray();
         }
-        args = args.Skip(1).ToArray();
         if (args[0].StartsWith("/") is false) args[0] = $"/{args[0]}";
         if (args[0].StartsWith("/bt")) operate = 2;
 
@@ -288,14 +290,25 @@ public static class GuessManager
         id = byte.MaxValue;
         string[] args = msg.Split(' ');
 
-        if (args[0] != "/cmd" || args.Length <= 1)
+        //"/"から始まるメッセージは"/cmd"を付けなくてもコマンドとして扱う("/cmd xxx"形式も互換のため引き続き使える)
+        if (!args[0].StartsWith("/"))
         {
             role = CustomRoles.NotAssigned;
             id = byte.MaxValue;
             error = "";
             return false;
         }
-        args = args.Skip(1).ToArray();
+        if (args[0] == "/cmd")
+        {
+            if (args.Length <= 1)
+            {
+                role = CustomRoles.NotAssigned;
+                id = byte.MaxValue;
+                error = "";
+                return false;
+            }
+            args = args.Skip(1).ToArray();
+        }
 
         var result = args.Length < 2 ? "" : args[1];
         msg = args.Length < 3 ? "" : args[2];

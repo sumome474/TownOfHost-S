@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+	  <GitExe>"C:\Program Files\Git\cmd\git.exe"</GitExe>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <Description>fork by Town Of Host</Description>
     <Authors>tukasa0001(EmptyBottle), integral0131</Authors>
     <langVersion>preview</langVersion>
-    <AssemblyName>TownOfHost-K</AssemblyName>
+    <AssemblyName>TownOfHost-S</AssemblyName>
     <NoWarn>MSB3246</NoWarn>
   </PropertyGroup>
 

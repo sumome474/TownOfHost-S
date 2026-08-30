@@ -373,6 +373,12 @@ namespace TownOfHost
         static bool MadBool = false;
         public static bool Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
         {
+            if (Modules.IceOniMode.NowIceOniMode)
+            {
+                if (AmongUsClient.Instance.AmHost)
+                    __instance.RpcBootFromVent(id);
+                return false;
+            }
             if (AmongUsClient.Instance.AmHost)
             {
                 var user = __instance.myPlayer;
@@ -514,6 +520,7 @@ namespace TownOfHost
         }
         public static bool CanUse(PlayerPhysics pp, int id, bool log = true)
         {
+            if (Modules.IceOniMode.NowIceOniMode) return false;
             //役職処理はここで行ってしまうと色々とめんどくさくなるので上で。
             var user = pp.myPlayer;
 

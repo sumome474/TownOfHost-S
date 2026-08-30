@@ -122,3 +122,50 @@ public static class KillButtonDoClickPatch
         PlayerControl.LocalPlayer.CheckMurder(closest); //一時的な修正
     }
 }*/
+
+[HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
+public static class KillButtonDoClickPatch
+{
+    public static bool Prefix()
+    {
+        if (!Modules.IceOniMode.NowIceOniMode) return true;
+
+        var me = PlayerControl.LocalPlayer;
+        if (!GameStates.IsInTask || me == null || !me.IsAlive() || me.Data.IsDead) return false;
+        if (HudManager._instance?.KillButton == null) return false;
+        if (HudManager._instance.KillButton.isCoolingDown) return false;
+        if (Modules.IceOniMode.IsFrozen(me)) return false;
+
+        // 氷鬼専用ターゲット（鬼=未凍結の逃げ1人 / 逃げ=凍結中1人）
+        var target = Modules.IceOniMode.GetKillButtonTarget(me);
+        if (target == null)
+        {
+            // フォールバック: 能力範囲の最寄り
+            var players = me.GetPlayersInAbilityRangeSorted(false);
+            if (players == null || players.Count <= 0) return false;
+            target = players[0];
+        }
+        if (target == null || target.PlayerId == me.PlayerId) return false;
+
+        if (Modules.IceOniMode.IsOni(me))
+        {
+            // 鬼: 凍結（CheckMurder → OnCheckMurder → Freeze 1人だけ）
+            me.CheckMurder(target);
+        }
+        else
+        {
+            // 逃げ: 解凍専用パス（クルーでも動くよう RPC 直送）
+            if (!Modules.IceOniMode.IsFrozen(target)) return false;
+            if (AmongUsClient.Instance.AmHost)
+                Modules.IceOniMode.TryThaw(me, target);
+            else
+                Modules.IceOniMode.SendThawRequestRPC(me.PlayerId, target.PlayerId);
+
+            // 解凍クールをボタンに反映
+            var cd = Modules.IceOniMode.OptionThawCooldown?.GetFloat() ?? 3f;
+            if (cd > 0f)
+                HudManager._instance.KillButton.SetCoolDown(cd, cd);
+        }
+        return false; // バニラキル処理は打たない
+    }
+}

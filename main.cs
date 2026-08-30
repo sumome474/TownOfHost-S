@@ -19,7 +19,7 @@ using System.IO;
 [assembly: AssemblyInformationalVersionAttribute(TownOfHost.Main.PluginVersion)]
 namespace TownOfHost
 {
-    [BepInPlugin(PluginGuid, "Town Of Host-K", PluginVersion)]
+    [BepInPlugin(PluginGuid, "Town Of Host-S", PluginVersion)]
     [BepInIncompatibility("jp.ykundesu.supernewrolesnext")]
     [BepInIncompatibility("jp.ykundesu.supernewroles")]
     [BepInIncompatibility("me.yukieiji.extremeroles")]
@@ -29,17 +29,17 @@ namespace TownOfHost
     {
         // == プログラム設定 / Program Config ==
         // modの名前 / Mod Name (Default: Town Of Host)
-        public static readonly string ModName = "Town Of Host-K";
-        // modの色 / Mod Color (Default: #00bfff)
-        public static readonly string ModColor = "#00c1ff";
+        public static readonly string ModName = "Town Of Host-S";
+        // modの色 / Mod Color (Default: #ffcc00)
+        public static readonly string ModColor = "#ffcc00";
         // 公開ルームを許可する / Allow Public Room (Default: true)
         public static readonly bool AllowPublicRoom = true;
         // フォークID / ForkId (Default: OriginalTOH)
-        public static readonly string ForkId = "TOH-K";
+        public static readonly string ForkId = "TOH-S";
         // Discordボタンを表示するか / Show Discord Button (Default: true)
         public static readonly bool ShowDiscordButton = true;
         // Discordサーバーの招待リンク / Discord Server Invite URL (Default: https://discord.gg/W5ug6hXB9V)
-        public static readonly string DiscordInviteUrl = "https://discord.gg/5DPqH8seFq";
+        public static readonly string DiscordInviteUrl = "https://discord.gg/UvfsdK8UT5";
         // ==========
         public const string OriginalForkId = "OriginalTOH"; // Don't Change The Value. / この値を変更しないでください。
         // == 認証設定 / Authentication Config ==
@@ -173,14 +173,14 @@ namespace TownOfHost
         public static string BaseDirectory
             => Path.GetFullPath(Path.Combine(
                 string.IsNullOrEmpty(BepInEx.Paths.BepInExRootPath) ? Application.persistentDataPath : BepInEx.Paths.BepInExRootPath,
-                "../TOHK_DATA"));
+                "../TOHS_DATA"));
         public override void Load()
         {
             GameCount = 0;
             Instance = this;
 
             //Client Options
-            HideName = Config.Bind("Client Options", "Hide Game Code Name", "Town Of Host-K");
+            HideName = Config.Bind("Client Options", "Hide Game Code Name", "Town Of Host-S");
             HideColor = Config.Bind("Client Options", "Hide Game Code Color", $"{ModColor}");
             ForceJapanese = Config.Bind("Client Options", "Force Japanese", false);
             JapaneseRoleName = Config.Bind("Client Options", "Japanese Role Name", true);
@@ -206,7 +206,7 @@ namespace TownOfHost
             DebugKeyInput = Config.Bind("Authentication", "Debug Key", "");
             ExplosionKeyInput = Config.Bind("Authentication", "Explosion Key", "");
 
-            Logger = BepInEx.Logging.Logger.CreateLogSource("TownOfHost-K");
+            Logger = BepInEx.Logging.Logger.CreateLogSource("TownOfHost-S");
             TownOfHost.Logger.Enable();
             TownOfHost.Logger.Disable("NotifyRoles");
             TownOfHost.Logger.Disable("SendRPC");
@@ -408,6 +408,8 @@ namespace TownOfHost
 
         HASTroll = CustomRoles.HASTroll,
         TaskPlayerB = CustomRoles.TaskPlayerB,
+        Sheriff2 = CustomRoles.Sheriff2,     
+        Imori = CustomRoles.Imori,
         SuddenDeathRed = 1000, SuddenDeathBlue = 1001, SuddenDeathYellow = 1002, SuddenDeathGreen = 1003, SuddenDeathPurple = 1004
     }
     /*public enum CustomRoles : byte

@@ -58,7 +58,15 @@ namespace TownOfHost
                             hasTasks = false;
                             break;
                         default:
-                            if (role.IsImpostor()) hasTasks = false;
+                            if (role.IsImpostor())
+                            {
+                                // TraitorCrewmate 等: 役職側 CanTask() が true のときだけ個人タスクを許可
+                                // RoleBase.CanTask() デフォルトは HasTasks 呼び出しのため再帰しないよう注意
+                                if (roleClass != null && roleClass.CanTask())
+                                    hasTasks = !ForRecompute;
+                                else
+                                    hasTasks = false;
+                            }
                             break;
                     }
 

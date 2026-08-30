@@ -179,7 +179,7 @@ namespace TownOfHost
                         UpdateDetailsPopup.name = "Update Detail";
                         UpdateDetailsPopup.gameObject.SetActive(true);
                         UpdateDetailsPopup.AnnouncementListSlider.SetActive(false);
-                        UpdateDetailsPopup.Title.text = "TOH-K " + ModUpdater.latestTitle;
+                        UpdateDetailsPopup.Title.text = "<#ffcc00>TOH-S</color> " + ModUpdater.latestTitle;
                         UpdateDetailsPopup.AnnouncementBodyText.text = Regex.Replace(ModUpdater.body.Replace("#", "").Replace("**", ""), @"\[(.*?)\]\(.*?\)", "$1");
                         UpdateDetailsPopup.DateString.text = "Latest Release";
                         UpdateDetailsPopup.SubTitle.text = "";

@@ -66,12 +66,10 @@ namespace TownOfHost
             {
                 Logger.Info($"YRWoKentisitaze", "KeyCommand");
                 Event.Special = GameStates.IsNotJoined;
-                if (Event.Special)
+                // ガイドライン: ロゴは TownOfHost-K.png のみ（差し替えなし）
+                if (Event.Special && CredentialsPatch.TohkLogo)
                 {
-                    if (CredentialsPatch.TohkLogo)
-                    {
-                        CredentialsPatch.TohkLogo.sprite = UtilsSprite.LoadSprite("TownOfHost.Resources.TOHK.TownOfHost-K_A.png", 300f);
-                    }
+                    CredentialsPatch.TohkLogo.sprite = UtilsSprite.LoadSprite("TownOfHost.Resources.TOHK.TownOfHost-K.png", 300f);
                 }
             }
             //ログファイルのダンプ

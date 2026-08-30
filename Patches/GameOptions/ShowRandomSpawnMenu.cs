@@ -84,8 +84,15 @@ class ShowRandomSpawnOption
                     Mapimage.transform.localPosition = new Vector3(0, 0, -10);
                     Mapimage.transform.localScale = new Vector3(map is MapNames.Polus or MapNames.MiraHQ ? 0.75f : 0.85f, 0.85f);
                     Mapimage.transform.DestroyChildren();
-                    Mapimage.sprite = UtilsSprite.LoadSprite($"TownOfHost.Resources.AmongUs.Map_{map}.png");
-                    Mapimage.gameObject.SetActive(true);
+                    // ガイドライン: カスタムマップ画像は使用しない
+                    var mapSpr = UtilsSprite.LoadSprite($"TownOfHost.Resources.AmongUs.Map_{map}.png");
+                    if (mapSpr != null)
+                    {
+                        Mapimage.sprite = mapSpr;
+                        Mapimage.gameObject.SetActive(true);
+                    }
+                    else
+                        Mapimage.gameObject.SetActive(false);
 
                     var pinsprite = UtilsSprite.LoadSprite("TownOfHost.Resources.TOHK.pin.png");
                     var id = 103000 + ((int)map * 100);
@@ -101,7 +108,8 @@ class ShowRandomSpawnOption
                         button.Text.DestroyTranslator();
                         button.Text.text = "";
                         Object.Destroy(button.transform.GetChild(1).gameObject);
-                        button.Background.sprite = pinsprite;
+                        if (pinsprite != null)
+                            button.Background.sprite = pinsprite;
                         button.Background.transform.localScale = new(0.1455f, 1.44f, 1);
                         button.Background.color = option.CurrentValue is 0 ? Palette.DisabledGrey : Palette.EnabledColor;
                         var passive = button.GetComponent<PassiveButton>();

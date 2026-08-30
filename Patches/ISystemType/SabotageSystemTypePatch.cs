@@ -60,6 +60,7 @@ public static class SabotageSystemTypeUpdateSystemPatch
     }
     private static bool CanSabotage(PlayerControl player)
     {
+        if (Modules.IceOniMode.NowIceOniMode) return false;
         //サボタージュ出来ないキラー役職はサボタージュ自体をキャンセル
         if (!player.Is(CustomRoleTypes.Impostor) && !player.Is(CustomRoles.DemonicSupporter))
         {

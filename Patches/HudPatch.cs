@@ -5,6 +5,7 @@ using HarmonyLib;
 using UnityEngine;
 using AmongUs.GameOptions;
 
+using TownOfHost.Modules;
 using TownOfHost.Roles;
 using TownOfHost.Roles.Core;
 using TownOfHost.Roles.Core.Interfaces;
@@ -133,32 +134,60 @@ namespace TownOfHost
                             __instance.AbilityButton.ToggleVisible(Visible);
                         }
                     }
-                    if (Main.CustomSprite.Value && CustomButtonHud.CantJikakuIsPresent is not true && !player.Is(CustomRoles.Amnesia))
+                    // 氷鬼モードのキルボタン文言
+                    if (Modules.IceOniMode.NowIceOniMode)
                     {
-                        if (roleClass != null)
+                        if (Modules.IceOniMode.IsOni(player))
+                            __instance.KillButton.OverrideText("凍結");
+                        else
+                            __instance.KillButton.OverrideText("解凍");
+                    }
+                    // キルボタン文言（ゾンビは常に「噛みつく」等）
+                    if (roleClass != null && !player.Is(CustomRoles.Amnesia) && CustomButtonHud.CantJikakuIsPresent is not true)
+                    {
+                        if ((roleClass as IKiller)?.OverrideKillButtonText(out string killText) == true)
                         {
-                            if (Amnesia.CheckAbility(player))
-                            {
-                                var killLabel = (roleClass as IKiller)?.OverrideKillButtonText(out string text) == true ? text : GetString(StringNames.KillLabel);
-                                __instance.KillButton.OverrideText(killLabel);
+                            __instance.KillButton.OverrideText(killText);
+                        }
+                        else if (Main.CustomSprite.Value && Amnesia.CheckAbility(player))
+                        {
+                            __instance.KillButton.OverrideText(GetString(StringNames.KillLabel));
+                        }
 
-                                if (roleClass.HasAbility)
-                                {
-                                    __instance.AbilityButton.OverrideText(roleClass.GetAbilityButtonText());
-                                    if (roleClass.AllEnabledColor)
-                                    {
-                                        __instance.AbilityButton.graphic.color = __instance.AbilityButton.buttonLabelText.color = Palette.EnabledColor;
-                                        __instance.AbilityButton.graphic.material.SetFloat(Desat, 0f);
-                                    }
-                                }
+                        if (Main.CustomSprite.Value && Amnesia.CheckAbility(player) && roleClass.HasAbility)
+                        {
+                            __instance.AbilityButton.OverrideText(roleClass.GetAbilityButtonText());
+                            if (roleClass.AllEnabledColor)
+                            {
+                                __instance.AbilityButton.graphic.color = __instance.AbilityButton.buttonLabelText.color = Palette.EnabledColor;
+                                __instance.AbilityButton.graphic.material.SetFloat(Desat, 0f);
                             }
                         }
                     }
 
-                    if (player.CanUseKillButton())
+                    bool canKill = player.CanUseKillButton();
+                    // 氷鬼: バニラクルーでもキルボタンを強制表示
+                    if (Modules.IceOniMode.NowIceOniMode && player.IsAlive() && !Modules.IceOniMode.IsFrozen(player))
+                        canKill = true;
+
+                    if (canKill)
                     {
-                        __instance.KillButton.ToggleVisible(/*player.IsAlive() && */GameStates.IsInTask);
-                        player.Data.Role.CanUseKillButton = true;
+                        try { player.Data.Role.CanUseKillButton = true; } catch { }
+                        if (GameStates.IsInTask && !GameStates.IsMeeting)
+                        {
+                            __instance.KillButton.Show();
+                            __instance.KillButton.gameObject.SetActive(true);
+                            __instance.KillButton.ToggleVisible(true);
+                            __instance.KillButton.SetEnabled();
+                            if (Modules.IceOniMode.NowIceOniMode)
+                            {
+                                Modules.IceOniMode.ApplyKillButtonVisual(__instance.KillButton, player);
+                            }
+                        }
+                        else
+                        {
+                            __instance.KillButton.ToggleVisible(false);
+                        }
                     }
                     else
                     {
@@ -365,52 +394,16 @@ namespace TownOfHost
                     if (customrole.IsVanilla()) return;
                     if (roleClass == null) return;
                     CantJikakuIsPresent = false;
-                    if (Main.CustomSprite.Value)
+                    // ガイドライン: キル/ベントは Among Us デフォルトボタンのみ使用
+                    if (MotoKillButton)
                     {
-                        if (roleClass != null)
-                        {
-                            if (isalive)
-                            {
-                                if (roleClass.OverrideAbilityButton(out string abname) == true && Main.CustomSprite.Value)
-                                {
-                                    player.Data.Role.Ability.Image = CustomButton.Get(abname);
-
-                                    player.Data.Role.Ability.name = "ModRoleAbilityButton";
-                                    player.Data.Role.InitializeAbilityButton();
-                                    if (reset && OldValue == Main.CustomSprite.Value)
-                                    {
-                                        var role = customrole.GetRoleTypes();
-                                        if (customrole.GetRoleInfo().IsDesyncImpostor && role is RoleTypes.Impostor) role = RoleTypes.Crewmate;
-                                        RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, role);
-                                        player.RpcResetAbilityCooldown();
-                                    }
-                                }
-                            }
-
-                            // Memo
-                            // キルボタン非表示してから当てれば大丈夫
-                            // キルボタンがバグってもなんかスイッチシェリフのキルボだけ大丈夫なことが多い。
-                            if ((roleClass as IKiller)?.OverrideKillButton(out string name) == true && Main.CustomSprite.Value)
-                            {
-                                __instance.KillButton.ChangeGraphic(CustomButton.Get(name));
-                                //__instance.KillButton.graphic.sprite = CustomButton.Get(name);
-                            }
-                            else if (MotoKillButton)
-                            {
-                                __instance.KillButton.graphic.sprite = MotoKillButton;
-                            }
-
-                            if ((roleClass as IKiller)?.OverrideImpVentButton(out string name2) == true && Main.CustomSprite.Value)
-                            {
-                                __instance.ImpostorVentButton.graphic.sprite = CustomButton.Get(name2);
-                            }
-                            else if (ImpVentButton)
-                            {
-                                __instance.ImpostorVentButton.graphic.sprite = ImpVentButton;
-                            }
-                        }
+                        __instance.KillButton.graphic.sprite = MotoKillButton;
                     }
-                    OldValue = Main.CustomSprite.Value;//アビリティボタンのあれのせいでクールがあれなのでリセット入る時だけしっかり反映させる。
+                    if (ImpVentButton)
+                    {
+                        __instance.ImpostorVentButton.graphic.sprite = ImpVentButton;
+                    }
+                    OldValue = Main.CustomSprite.Value;
                 }
             }
             catch (Exception ex) { Logger.Error($"{ex}", "ButtonHud"); }
@@ -572,9 +565,24 @@ namespace TownOfHost
             if (!isActive) return;
 
             var player = PlayerControl.LocalPlayer;
-            __instance.KillButton.ToggleVisible(player.CanUseKillButton());
-            __instance.ImpostorVentButton.ToggleVisible(player.CanUseImpostorVentButton());
-            __instance.SabotageButton.ToggleVisible(player.CanUseSabotageButton());
+            if (Modules.IceOniMode.NowIceOniMode && player != null && player.IsAlive()
+                && !Modules.IceOniMode.IsFrozen(player))
+            {
+                Main.showkillbutton = true;
+                try { player.Data.Role.CanUseKillButton = true; } catch { }
+                __instance.KillButton.Show();
+                __instance.KillButton.gameObject.SetActive(true);
+                __instance.KillButton.ToggleVisible(true);
+                Modules.IceOniMode.ApplyKillButtonVisual(__instance.KillButton, player);
+                __instance.ImpostorVentButton.ToggleVisible(false);
+                __instance.SabotageButton.ToggleVisible(false);
+            }
+            else
+            {
+                __instance.KillButton.ToggleVisible(player.CanUseKillButton());
+                __instance.ImpostorVentButton.ToggleVisible(player.CanUseImpostorVentButton());
+                __instance.SabotageButton.ToggleVisible(player.CanUseSabotageButton());
+            }
 
             CustomButtonHud.BottonHud();
         }
@@ -787,6 +795,56 @@ namespace TownOfHost
         public static string GetText()
         {
             return SystemType.ToString() + "(" + ((SystemTypes)SystemType).ToString() + ")\r\n" + amount;
+        }
+    }
+
+    /// <summary>
+    /// 氷鬼モード専用: キル/解凍ボタンを毎フレーム強制表示
+    /// </summary>
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    class IceOniKillButtonForcePatch
+    {
+        public static void Postfix(HudManager __instance)
+        {
+            // NowIceOniMode が落ちていてもゲームモードで判定
+            if (!Modules.IceOniMode.NowIceOniMode
+                && Options.CurrentGameMode is not CustomGameMode.IceOni) return;
+            if (Options.CurrentGameMode is CustomGameMode.IceOni)
+                Modules.IceOniMode.NowIceOniMode = true;
+            if (!AmongUsClient.Instance.IsGameStarted) return;
+            if (!GameStates.IsInTask || GameStates.IsMeeting || GameStates.IsLobby) return;
+            if (__instance == null || __instance.KillButton == null) return;
+
+            var player = PlayerControl.LocalPlayer;
+            if (player == null || !player.IsAlive() || player.Data == null || player.Data.IsDead) return;
+            if (Modules.IceOniMode.IsFrozen(player))
+            {
+                __instance.KillButton.ToggleVisible(false);
+                return;
+            }
+
+            Main.showkillbutton = true;
+            try { player.Data.Role.CanUseKillButton = true; } catch { }
+
+            var kb = __instance.KillButton;
+            if (kb.gameObject != null && !kb.gameObject.activeSelf)
+                kb.gameObject.SetActive(true);
+
+            kb.Show();
+            kb.ToggleVisible(true);
+
+            var target = Modules.IceOniMode.GetKillButtonTarget(player);
+            kb.SetTarget(target);
+            if (target != null)
+                kb.SetEnabled();
+            else
+                kb.SetDisabled();
+
+            Modules.IceOniMode.ApplyKillButtonVisual(kb, player);
+
+            // サボ・ベントは隠す
+            __instance.SabotageButton?.ToggleVisible(false);
+            __instance.ImpostorVentButton?.ToggleVisible(false);
         }
     }
 }

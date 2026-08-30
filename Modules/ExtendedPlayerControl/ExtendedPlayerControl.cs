@@ -254,9 +254,17 @@ namespace TownOfHost
 
         public static bool CanUseKillButton(this PlayerControl pc)
         {
-            if (pc.PlayerId == PlayerControl.LocalPlayer.PlayerId && !Main.showkillbutton) return false;
             if (!pc.IsAlive()) return false;
             if (pc?.Data?.Role?.Role == RoleTypes.GuardianAngel) return false;
+
+            // 氷鬼: showkillbutton より先に判定（逃げの解凍ボタン用）
+            if (Modules.IceOniMode.NowIceOniMode)
+            {
+                if (Modules.IceOniMode.IsFrozen(pc)) return false;
+                return true;
+            }
+
+            if (pc.PlayerId == PlayerControl.LocalPlayer.PlayerId && !Main.showkillbutton) return false;
 
             if (pc.Is(CustomRoles.Amnesia) && !pc.Is(CustomRoleTypes.Impostor)) return false;
 
@@ -281,7 +289,7 @@ namespace TownOfHost
         }
         public static bool CanUseSabotageButton(this PlayerControl pc)
         {
-            if (Options.CurrentGameMode is CustomGameMode.SuddenDeath or CustomGameMode.MurderMystery) return false;
+            if (Options.CurrentGameMode is CustomGameMode.SuddenDeath or CustomGameMode.MurderMystery or CustomGameMode.IceOni) return false;
             if (pc.GetPlayerState() is null) return false;
             if (pc.Is(CustomRoles.DemonicSupporter)) return true;
             if (pc.Is(CustomRoles.Amnesia) && !pc.Is(CustomRoleTypes.Impostor)) return false;

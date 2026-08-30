@@ -39,7 +39,9 @@ namespace TownOfHost
         SyncModSystem,
         SyncAssassinState,
         GetAchievement,
-        PublicRoleSync
+        PublicRoleSync,
+        IceOniFreeze,
+        IceOniThawRequest
     }
     public enum Sounds
     {
@@ -269,6 +271,12 @@ namespace TownOfHost
                     int flug = reader.ReadInt32();
                     int achiid = reader.ReadInt32();
                     Achievements.RpcCompleteAchievement(id, flug, achiid);
+                    break;
+                case CustomRPC.IceOniFreeze:
+                    IceOniMode.ReceiveFreezeRPC(reader);
+                    break;
+                case CustomRPC.IceOniThawRequest:
+                    IceOniMode.ReceiveThawRequestRPC(reader);
                     break;
                 case CustomRPC.PublicRoleSync:
                     {

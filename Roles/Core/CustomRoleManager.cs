@@ -822,6 +822,7 @@ public enum CustomRoles
     NekoKabocha,
     EvilHacker,
     Insider,
+    Kuma,
     //TOH-k
     Bomber,
     TeleportKiller,
@@ -859,6 +860,7 @@ public enum CustomRoles
     Assassin,
     EvilBlender,
     UnFortuner,
+    TraitorCrewmate,
     //DEBUG only Impostor
     //Madmate
     MadGuardian,
@@ -906,6 +908,7 @@ public enum CustomRoles
     ToiletFan,
     Bakery,
     FortuneTeller,
+    // WeirdFortuneTeller は削除済み
     TaskStar,
     PonkotuTeller,
     UltraStar,
@@ -941,6 +944,8 @@ public enum CustomRoles
     Observer,
     Satellite,
     Merlin,
+    NidoToHyo,
+    Pukupuku,
     //DEBUG only Crewmate
     Analyzer,
     //Neutral
@@ -953,6 +958,8 @@ public enum CustomRoles
     Terrorist,
     Executioner,
     Jackal,
+    Imori,
+    Sheriff2,
     //TOHk
     Remotekiller,
     Chef,

@@ -20,6 +20,7 @@ namespace TownOfHost
         StandardHAS,//= 0x04
         SuddenDeath,//= 0x05
         MurderMystery,//= 0x06
+        IceOni,//= 0x07
         All = int.MaxValue
     }
 
@@ -32,6 +33,7 @@ namespace TownOfHost
         SuddenDeath,//サドンデス(Sta)
         MurderMystery,
         StandardHAS,//役職入りかくれんぼ(Sta)
+        IceOni,//氷鬼モード
         Role,//役職設定
         GameOption,//ゲーム設定
         OtherOption,//その他の設定
@@ -92,7 +94,7 @@ namespace TownOfHost
 
         public static readonly string[] gameModes =
         {
-            "Standard", "HideAndSeek","TaskBattle","StandardHAS","SuddenDeath","MurderMystery",
+            "Standard", "HideAndSeek","TaskBattle","StandardHAS","SuddenDeath","MurderMystery","IceOni",
         };
 
         // MapActive
@@ -163,6 +165,8 @@ namespace TownOfHost
         public static OptionItem ExCallMeetingBlackout;
         public static OptionItem ExIntroWeight;
         public static OptionItem ExChatMonochrome;
+        public static OptionItem TpCommandGeneralPlayer;
+        public static OptionItem NameCommandGeneralPlayer;
 
         //幽霊役職
         public static OptionItem GhostRoleOption;
@@ -616,6 +620,7 @@ namespace TownOfHost
             //最初のオプションのみここ
             SuddenDeathMode.CreateOption();
             MurderMystery.SetUpMurderMysteryOption();
+            IceOniMode.SetUpOption();
             ObjectOptionitem.Create(1_000_121, "StandardHAS", true, null, TabGroup.MainSettings).SetOptionName(() => "Standard HAS").SetColorcode("#ecff41ff").SetTag(CustomOptionTags.StandardHAS);
             StandardHASWaitingTime = FloatOptionItem.Create(100007, "StandardHASWaitingTime", new(0f, 180f, 2.5f), 10f, TabGroup.MainSettings, false)
                 .SetValueFormat(OptionFormat.Seconds).SetTag(CustomOptionTags.StandardHAS).SetHeader(true);
@@ -633,7 +638,7 @@ namespace TownOfHost
             ObjectOptionitem.Create(1_000_113, "GameOption", true, null, TabGroup.MainSettings).SetOptionName(() => "Game").SetColorcode("#ea633eff");
             ONspecialMode = BooleanOptionItem.Create(100000, "ONspecialMode", false, TabGroup.MainSettings, false)
                 .SetHeader(true)
-                .SetColorcode("#00c1ff");
+                .SetColorcode("#ffcc00");
             InsiderMode = BooleanOptionItem.Create(100001, "InsiderMode", false, TabGroup.MainSettings, false).SetParent(ONspecialMode)
                 .SetTag(CustomOptionTags.Standard)
                 .SetTooltip(() => Translator.GetString("InsiderModeOptionInfo"));
@@ -680,6 +685,12 @@ namespace TownOfHost
                 .SetInfo(Translator.GetString("ExIntroWeightInfo"));
             ExChatMonochrome = BooleanOptionItem.Create(105015, "ExChatMonochrome", false, TabGroup.MainSettings, false)
                 .SetParent(ExperimentalMode);
+            TpCommandGeneralPlayer = BooleanOptionItem.Create(105016, "TpCommandGeneralPlayer", false, TabGroup.MainSettings, false)
+                .SetParent(ExperimentalMode)
+                .SetInfo(Translator.GetString("TpCommandGeneralPlayerInfo"));
+            NameCommandGeneralPlayer = BooleanOptionItem.Create(105017, "NameCommandGeneralPlayer", false, TabGroup.MainSettings, false)
+                .SetParent(ExperimentalMode)
+                .SetInfo(Translator.GetString("NameCommandGeneralPlayerInfo"));
 
             //9人以上部屋で落ちる現象の対策
             FixSpawnPacketSize = BooleanOptionItem.Create(105010, "FixSpawnPacketSize", false, TabGroup.MainSettings, true)
@@ -1176,15 +1187,15 @@ namespace TownOfHost
             AutoDisplayKillLog = BooleanOptionItem.Create(1_000_006, "AutoDisplayKillLog", true, TabGroup.MainSettings, true)
                 .SetColorcode("#66ffff");
             HideGameSettings = BooleanOptionItem.Create(1_000_002, "HideGameSettings", false, TabGroup.MainSettings, true)
-                .SetColorcode("#00c1ff");
+                .SetColorcode("#ffcc00");
             HideSettingsDuringGame = BooleanOptionItem.Create(1_000_003, "HideGameSettingsDuringGame", false, TabGroup.MainSettings, true)
-                .SetColorcode("#00c1ff");
+                .SetColorcode("#ffcc00");
             SuffixMode = StringOptionItem.Create(1_000_001, "SuffixMode", suffixModes, 0, TabGroup.MainSettings, true)
-                .SetColorcode("#00c1ff");
+                .SetColorcode("#ffcc00");
             ChangeNameToRoleInfo = BooleanOptionItem.Create(1_000_004, "ChangeNameToRoleInfo", true, TabGroup.MainSettings, true)
-                .SetColorcode("#00c1ff");
+                .SetColorcode("#ffcc00");
             RoleAssigningAlgorithm = StringOptionItem.Create(1_000_005, "RoleAssigningAlgorithm", RoleAssigningAlgorithms, 0, TabGroup.MainSettings, true)
-                .SetColorcode("#00c1ff")
+                .SetColorcode("#ffcc00")
                 .RegisterUpdateValueEvent(
                     (object obj, OptionItem.UpdateValueEventArgs args) => IRandom.SetInstanceById(args.CurrentValue)
                 );
@@ -1221,24 +1232,22 @@ namespace TownOfHost
 
             static void CreateRoleOption(IOrderedEnumerable<SimpleRoleInfo> sortedRoleInfo, CustomRoleTypes roleTypes)
             {
-                bool Create = true;
-                int NowTabNum = 0;
-                while (Create)
+                // TabNumber の空きで止まらないよう、該当タイプの全役職を一括登録
+                foreach (var info in sortedRoleInfo
+                    .Where(role => role.CustomRoleType == roleTypes)
+                    .OrderBy(role => role.OptionSort.TabNumber)
+                    .ThenBy(role => role.OptionSort.SortNumber))
                 {
-                    var RoleList = sortedRoleInfo.Where(role => role.CustomRoleType == roleTypes
-                    && role.OptionSort.TabNumber == NowTabNum);
-                    if (RoleList.Count() <= 0)
+                    if (info.RoleName is CustomRoles.AlienHijack) continue;
+                    try
                     {
-                        Create = false;
-                        break;
-                    }
-                    foreach (var info in RoleList.OrderBy(role => role.OptionSort.SortNumber))
-                    {
-                        if (info.RoleName is CustomRoles.AlienHijack) continue;
                         SetupRoleOptions(info);
                         info.OptionCreator?.Invoke();
                     }
-                    NowTabNum++;
+                    catch (System.Exception ex)
+                    {
+                        Logger.Error($"CreateRoleOption failed: {info.RoleName} / {ex}", "Options");
+                    }
                 }
             }
         }

@@ -7,8 +7,17 @@ namespace TownOfHost
     #region Sprite
     public static class UtilsSprite
     {
+        /// <summary>
+        /// TOHKガイドライン準拠: TownOfHost-K.png 以外のカスタム画像は読み込まない（文字表示のみ）。
+        /// </summary>
         public static Sprite LoadSprite(string path, float pixelsPerUnit = 1f)
         {
+            // TownOfHost-K.png のみ許可
+            if (string.IsNullOrEmpty(path) || !path.EndsWith("TownOfHost-K.png"))
+            {
+                return null;
+            }
+
             Sprite sprite = null;
             try
             {

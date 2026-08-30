@@ -26,6 +26,19 @@ namespace TownOfHost
         }
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
+            // 氷鬼: クライアントからもホストへ処理を依頼 / ホストは凍結・解凍
+            if (Modules.IceOniMode.NowIceOniMode)
+            {
+                if (!AmongUsClient.Instance.AmHost)
+                {
+                    // クライアントは通常の CheckMurder を通してホストに届ける
+                    return true;
+                }
+                // ホスト: 凍結/解凍に置き換え（通常キルは行わない）
+                Modules.IceOniMode.OnCheckMurder(__instance, target);
+                return false;
+            }
+
             if (!AmongUsClient.Instance.AmHost) return false;
 
             // 処理は全てCustomRoleManager側で行う

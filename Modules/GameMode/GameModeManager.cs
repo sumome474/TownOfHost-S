@@ -52,11 +52,16 @@ class GameModeManager
                 result.Add(CustomOptionTags.GameOption);
                 result.Add(CustomOptionTags.OtherOption);
                 break;
+            case CustomGameMode.IceOni:
+                result.Add(CustomOptionTags.IceOni);
+                result.Add(CustomOptionTags.GameOption);
+                result.Add(CustomOptionTags.OtherOption);
+                break;
         }
 
         return result.ToArray();
     }
 
     public static bool IsStandardClass()
-        => Options.CurrentGameMode is CustomGameMode.Standard or CustomGameMode.StandardHAS or CustomGameMode.SuddenDeath or CustomGameMode.MurderMystery;
+        => Options.CurrentGameMode is CustomGameMode.Standard or CustomGameMode.StandardHAS or CustomGameMode.SuddenDeath or CustomGameMode.MurderMystery or CustomGameMode.IceOni;
 }

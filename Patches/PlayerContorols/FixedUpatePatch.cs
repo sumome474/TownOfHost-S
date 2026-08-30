@@ -42,6 +42,38 @@ namespace TownOfHost
             {
                 TaskBattle.FixedUpdate(__instance);
             }
+            if (Modules.IceOniMode.NowIceOniMode)
+            {
+                Modules.IceOniMode.OnPlayerFixedUpdate(__instance);
+                if (__instance.PlayerId == PlayerControl.LocalPlayer?.PlayerId)
+                {
+                    Modules.IceOniMode.OnGlobalFixedUpdate();
+                    // キル/解凍ボタンのターゲットを毎フレーム設定（クルー逃げでも表示）
+                    if (GameStates.IsInTask && !GameStates.IsMeeting && __instance.IsAlive()
+                        && !Modules.IceOniMode.IsFrozen(__instance)
+                        && HudManager.Instance?.KillButton != null)
+                    {
+                        var kb = HudManager.Instance.KillButton;
+                        var t = Modules.IceOniMode.GetKillButtonTarget(__instance);
+                        try { __instance.Data.Role.CanUseKillButton = true; } catch { }
+                        kb.gameObject.SetActive(true);
+                        kb.Show();
+                        kb.ToggleVisible(true);
+                        kb.SetTarget(t);
+                        if (t != null)
+                            kb.SetEnabled();
+                        else
+                            kb.SetDisabled();
+                        Modules.IceOniMode.ApplyKillButtonVisual(kb, __instance);
+                    }
+                }
+            }
+            // ロビー中: 鬼スロットのプレイヤー名一覧を更新
+            if (GameStates.IsLobby && __instance.PlayerId == PlayerControl.LocalPlayer?.PlayerId
+                && Options.CurrentGameMode is CustomGameMode.IceOni)
+            {
+                Modules.IceOniMode.RefreshOniPlayerOptions();
+            }
             if (Options.CurrentGameMode is CustomGameMode.TaskBattle && player.PlayerId == PlayerControl.LocalPlayer.PlayerId && GameStates.IsInTask && GameStates.introDestroyed)
             {
                 TaskBattle.timer += Time.deltaTime;

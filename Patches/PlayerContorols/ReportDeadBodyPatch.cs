@@ -25,6 +25,11 @@ namespace TownOfHost
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] NetworkedPlayerInfo target)
         {
             if (GameStates.IsMeeting || GameStates.IsLobby || Wait) return false;
+            if (Modules.IceOniMode.NowIceOniMode && !Modules.IceOniMode.CanReport())
+            {
+                GameStates.CalledMeeting = false;
+                return false;
+            }
             if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Default) return false;
             if (SuddenDeathMode.NowSuddenDeathMode)
             {
@@ -40,7 +45,7 @@ namespace TownOfHost
                 return false;
             }
 
-            if (Options.CurrentGameMode is CustomGameMode.HideAndSeek or CustomGameMode.TaskBattle or CustomGameMode.MurderMystery || Options.IsStandardHAS)
+            if (Options.CurrentGameMode is CustomGameMode.HideAndSeek or CustomGameMode.TaskBattle or CustomGameMode.MurderMystery or CustomGameMode.IceOni || Options.IsStandardHAS)
             {
                 GameStates.CalledMeeting = false;
                 MurderMystery.OnReportDeadBody(__instance, target);
