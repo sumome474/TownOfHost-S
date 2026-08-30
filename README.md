@@ -108,13 +108,12 @@ HostModなので部屋主のみModを導入すれば、<br>
 <details>
 
 <summary>モード</summary>
-
-- [スタンダード](https://github.com/KYMario/TownOfHost-K/wiki/スタンダード)
-- - [役職入りかくれんぼ](https://github.com/KYMario/TownOfHost-K/wiki/役職入りかくれんぼ)
-- - [サドンデスモード](https://github.com/KYMario/TownOfHost-K/wiki/サドンデスモード)
-- [かくれんぼ](https://github.com/KYMario/TownOfHost-K/wiki/かくれんぼ)
-- [タスクバトル](https://github.com/KYMario/TownOfHost-K/wiki/タスクバトル)
-- [氷鬼](https://github.com/sumome474/TownOfHost-S/wiki/%E6%B0%B7%E9%AC%BC)
+[スタンダード](https://github.com/KYMario/TownOfHost-K/wiki/スタンダード)
+[役職入りかくれんぼ](https://github.com/KYMario/TownOfHost-K/wiki/役職入りかくれんぼ)
+[サドンデスモード](https://github.com/KYMario/TownOfHost-K/wiki/サドンデスモード)
+[かくれんぼ](https://github.com/KYMario/TownOfHost-K/wiki/かくれんぼ)
+[タスクバトル](https://github.com/KYMario/TownOfHost-K/wiki/タスクバトル)
+[氷鬼](https://github.com/sumome474/TownOfHost-S/wiki/%E6%B0%B7%E9%AC%BC)
 </details>
 
 その他機能、変更点などは基本wikiをご覧ください。<br>
