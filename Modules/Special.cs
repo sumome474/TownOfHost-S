@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -324,6 +327,7 @@ public sealed class Chameleon : RoleBase, IAdditionalWinner
     public override void OverrideTrueRoleName(ref UnityEngine.Color roleColor, ref string roleText) => roleText = Translator.GetString($"{NowTeam}").Color(UtilsRoleText.GetRoleColor(NowTeam)) + Translator.GetString("Chameleon");
     public override void AfterMeetingTasks() => _ = new LateTask(() => { if (!GameStates.CalledMeeting) ChengeTeam(); }, 5f, "", true);
     public bool CheckWin(ref CustomRoles winnerRole) => ((CustomRoles)CustomWinnerHolder.WinnerTeam == NowTeam) || CustomWinnerHolder.AdditionalWinnerRoles.Contains(NowTeam);
+<<<<<<< HEAD
 =======
 using System;
 using System.Collections.Generic;
@@ -649,4 +653,6 @@ public sealed class Chameleon : RoleBase, IAdditionalWinner
     public override void AfterMeetingTasks() => _ = new LateTask(() => { if (!GameStates.CalledMeeting) ChengeTeam(); }, 5f, "", true);
     public bool CheckWin(ref CustomRoles winnerRole) => ((CustomRoles)CustomWinnerHolder.WinnerTeam == NowTeam) || CustomWinnerHolder.AdditionalWinnerRoles.Contains(NowTeam);
 >>>>>>> 8a3e0960256c17ae5eb2775e360df238507980b5
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 }

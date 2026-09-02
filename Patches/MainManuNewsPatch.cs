@@ -27,7 +27,11 @@ public class ModNewsHistory
                     Title = "Town Of Host-S",
                     SubTitle = "<color=#ffcc00>Town Of Host-S へようこそ！</color>",
                     ShortTitle = "<color=#ffcc00>◆Town Of Host-S</color>",
+<<<<<<< HEAD
                     Text = "テスト\n\r改行テスト",
+=======
+                    Text = "ベータ版リリース",
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
                     Date = "2026-08-26T00:00:00Z"
                 };
                 AllModNews.Add(news);
@@ -39,8 +43,25 @@ public class ModNewsHistory
                     Title = "Town Of Host-S",
                     SubTitle = "<color=#ffcc00>Town Of Host-S へようこそ！</color>",
                     ShortTitle = "<color=#ffcc00>◆Town Of Host-S</color>",
+<<<<<<< HEAD
                     Text = "テスト2\n\r改行テスト2",
                     Date = "2026-08-27T00:00:00Z"
+=======
+                    Text = "バグ修正とバージョン表記修正\n\rバグ修正はプクプクという役職の表記を修正しました",
+                    Date = "2026-09-01T00:00:00Z"
+                };
+                AllModNews.Add(news);
+            }
+            {
+                var news = new ModNews
+                {
+                    Number = 3,
+                    Title = "Town Of Host-S",
+                    SubTitle = "<color=#ffcc00>Town Of Host-S へようこそ！</color>",
+                    ShortTitle = "<color=#ffcc00>◆Town Of Host-S</color>",
+                    Text = "すもAI追加と正式リリース開始！\n\rみんなで祝いましょう！",
+                    Date = "2026-09-02T00:00:00Z"
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
                 };
                 AllModNews.Add(news);
             }

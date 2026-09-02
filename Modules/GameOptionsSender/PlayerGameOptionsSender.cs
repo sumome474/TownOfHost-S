@@ -145,6 +145,10 @@ namespace TownOfHost.Modules
             AURoleOptions.ShapeshifterLeaveSkin = false;
             AURoleOptions.NoisemakerImpostorAlert = true;
             AURoleOptions.NoisemakerAlertDuration = Noisemaker.NoisemakerAlertDuration.GetFloat();
+<<<<<<< HEAD
+=======
+            AURoleOptions.JudgeTaskRequirementPercentage = Judge.OptionTaskRequirement.GetFloat();
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
             AURoleOptions.ViperDissolveTime = Viper.ViperDissolveTime;
 
             if (player == null)
@@ -409,6 +413,7 @@ namespace TownOfHost.Modules
             }
         }
     }
+<<<<<<< HEAD
 =======
 using System.Linq;
 using AmongUs.GameOptions;
@@ -823,4 +828,6 @@ namespace TownOfHost.Modules
         }
     }
 >>>>>>> 8a3e0960256c17ae5eb2775e360df238507980b5
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 }

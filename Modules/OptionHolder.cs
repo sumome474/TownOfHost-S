@@ -167,6 +167,10 @@ namespace TownOfHost
         public static OptionItem ExChatMonochrome;
         public static OptionItem TpCommandGeneralPlayer;
         public static OptionItem NameCommandGeneralPlayer;
+<<<<<<< HEAD
+=======
+        public static OptionItem SumoCommandEnabled;
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 
         //幽霊役職
         public static OptionItem GhostRoleOption;
@@ -691,6 +695,11 @@ namespace TownOfHost
             NameCommandGeneralPlayer = BooleanOptionItem.Create(105017, "NameCommandGeneralPlayer", false, TabGroup.MainSettings, false)
                 .SetParent(ExperimentalMode)
                 .SetInfo(Translator.GetString("NameCommandGeneralPlayerInfo"));
+<<<<<<< HEAD
+=======
+            SumoCommandEnabled = BooleanOptionItem.Create(105018, "SumoCommandEnabled", true, TabGroup.MainSettings, false)
+                .SetInfo(Translator.GetString("SumoCommandEnabledInfo"));
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 
             //9人以上部屋で落ちる現象の対策
             FixSpawnPacketSize = BooleanOptionItem.Create(105010, "FixSpawnPacketSize", false, TabGroup.MainSettings, true)

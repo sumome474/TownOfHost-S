@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 using AmongUs.Data;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -330,6 +331,8 @@ namespace TownOfHost
     }
 }
 =======
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 using AmongUs.Data;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -668,4 +671,7 @@ namespace TownOfHost
         }
     }
 }
+<<<<<<< HEAD
 >>>>>>> 8a3e0960256c17ae5eb2775e360df238507980b5
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using TownOfHost.Modules;
@@ -87,6 +88,8 @@ public sealed class Judge : RoleBase
     }
 }
 =======
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using TownOfHost.Modules;
@@ -203,4 +206,7 @@ public sealed class Judge : RoleBase
     }*/
     public override string GetProgressText(bool comms = false, bool GameLog = false) => $" <{(0 < LimitAbility ? RoleInfo.RoleColorCode : "#828282")}>({LimitAbility})</color>";
 }
+<<<<<<< HEAD
 >>>>>>> 8a3e0960256c17ae5eb2775e360df238507980b5
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)

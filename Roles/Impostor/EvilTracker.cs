@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -402,6 +403,8 @@ public sealed class EvilTracker : RoleBase, IImpostor, IKillFlashSeeable, ISidek
         achievements.Add(0, n1);
     }
 =======
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -796,5 +799,8 @@ public sealed class EvilTracker : RoleBase, IImpostor, IKillFlashSeeable, ISidek
         var n1 = new Achievement(RoleInfo, 0, 1, 0, 0);
         achievements.Add(0, n1);
     }
+<<<<<<< HEAD
 >>>>>>> 8a3e0960256c17ae5eb2775e360df238507980b5
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 }

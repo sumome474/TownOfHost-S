@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,9 +63,15 @@ namespace TownOfHost
         // ==========
         //Sorry for many Japanese comments.
         public const string PluginGuid = "com.kymario.townofhost-k";
+<<<<<<< HEAD
         public const string PluginVersion = "51.14.32.53";//ほんとはx.y.z表記にしたかったけどx.y.z.km.ks表記だと警告だされる
         public const string PluginShowVersion = "51.14.32.53";
         public const string ModVersion = ".14.32";//リリースver用バージョン変更
+=======
+        public const string PluginVersion = "30.00.00.10";//ほんとはx.y.z表記にしたかったけどx.y.z.km.ks表記だと警告だされる
+        public const string PluginShowVersion = "30.00.00.10";
+        public const string ModVersion = ".00.10";//リリースver用バージョン変更
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 
         /// 配布するデバッグ版なのであればtrue。リリース時にはfalseにすること。
         public static bool DebugVersion = false;
@@ -452,6 +461,7 @@ namespace TownOfHost
         FoolandNue,
         VegaandAltair
     }
+<<<<<<< HEAD
 }
 using System;
 using System.Collections.Generic;
@@ -905,3 +915,6 @@ namespace TownOfHost
         VegaandAltair
     }
 }
+=======
+}
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)

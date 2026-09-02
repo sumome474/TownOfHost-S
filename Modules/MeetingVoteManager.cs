@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -701,6 +702,8 @@ public class MeetingVoteManager
     }
 }
 =======
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -1407,4 +1410,7 @@ public class MeetingVoteManager
         }
     }
 }
+<<<<<<< HEAD
 >>>>>>> 8a3e0960256c17ae5eb2775e360df238507980b5
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)

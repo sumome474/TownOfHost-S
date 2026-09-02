@@ -2846,6 +2846,12 @@ NidoToHyo.Activate,Targeted {0} and {1}. Forcibly ending the meeting.,{0}と{1}�
 NidoToHyo.WinLog,The Crewmates win was secured by NidoToHyo's targeting.,ツインポートの指名により、クルーメイトの勝利が確定した。
 TpCommandGeneralPlayer,Allow general players to use /tp,一般プレイヤーも/tpコマンドを使えるようにする
 TpCommandGeneralPlayerInfo,"If enabled, non-host players can also use /tp o and /tp i in the lobby. If disabled, only the host can use it.",有効にすると、ホスト以外の一般プレイヤーもロビーで /tp o と /tp i を使えるようになる。無効の場合はホストのみ使用可能。
+<<<<<<< HEAD
+=======
+SumoCommandEnabled,Enable /sumo command,/sumoコマンドを有効にする
+SumoCommandEnabledInfo,"If disabled, the /sumo chat AI command is turned off entirely.",無効にすると、/sumoチャットAIコマンドが使用できなくなる。
+SumoCommand.Disabled,The /sumo command is currently disabled.,/sumoコマンドは現在無効になっています。
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 TpCommand.LobbyOnly,/tp can only be used in the lobby.,/tpコマンドはロビーでのみ使用できる。
 TpCommand.NotAllowed,You are not allowed to use /tp. (Ask the host to enable it in the settings),/tpコマンドを使う権限がない。(ホストに設定を有効にしてもらってください)
 TpCommand.Out,You moved to the right edge of the ship. Use /tp i to return.,船の右端に移動した。戻るときは /tp i と入力してください。

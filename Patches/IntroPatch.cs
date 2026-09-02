@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -653,6 +654,8 @@ namespace TownOfHost
         }
     }
 =======
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -932,6 +935,19 @@ namespace TownOfHost
                     __instance.ImpostorText.gameObject.SetActive(PlayerCatch.AllPlayerControls.Count() == 1);
                     if (PlayerCatch.AllPlayerControls.Count() == 1) __instance.ImpostorText.text = GetString("TaskRTAInfo");
                     break;
+<<<<<<< HEAD
+=======
+
+                case CustomRoles.TraitorCrewmate:
+                    // 見た目上はクルー(Engineer)として始まるが、正体はインポスター陣営なので
+                    // 専用のタイトル・キャッチコピーとクルー色→インポスター色のフェードで裏切りを演出する
+                    __instance.TeamTitle.text = UtilsRoleText.GetRoleName(role);
+                    __instance.TeamTitle.color = UtilsRoleText.GetRoleColor(role);
+                    __instance.ImpostorText.gameObject.SetActive(true);
+                    __instance.ImpostorText.text = GetString("TraitorCrewmateInfo");
+                    StartFadeIntro(__instance, Palette.CrewmateBlue, Palette.ImpostorRed, 2000);
+                    break;
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
             }
             if (SuddenDeathMode.NowSuddenDeathMode)
             {
@@ -1300,5 +1316,8 @@ namespace TownOfHost
             Logger.Info("OnDestroy", "IntroCutscene");
         }
     }
+<<<<<<< HEAD
 >>>>>>> 8a3e0960256c17ae5eb2775e360df238507980b5
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 }

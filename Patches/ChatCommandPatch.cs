@@ -217,6 +217,19 @@ namespace TownOfHost
             {
                 switch (args[0])
                 {
+<<<<<<< HEAD
+=======
+                    case "/sumo":
+                        canceled = true;
+                        if (!Options.SumoCommandEnabled.GetBool())
+                        {
+                            SendMessage(GetString("SumoCommand.Disabled"), PlayerControl.LocalPlayer.PlayerId);
+                            break;
+                        }
+                        subArgs = args.Length < 2 ? "" : string.Join(" ", args.Skip(1)).Trim();
+                        SumoAI.Reply(PlayerControl.LocalPlayer, subArgs);
+                        break;
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
                     case "/win":
                     case "/winner":
                         canceled = true;
@@ -1378,8 +1391,13 @@ namespace TownOfHost
                 ChatManager.SendMessage(player, text);
             }
 
+<<<<<<< HEAD
             // /tp と /name はオプションにより /cmd なしでも一般プレイヤーから受け付ける
             if (args[0].Equals("/tp", StringComparison.OrdinalIgnoreCase) || args[0].Equals("/name", StringComparison.OrdinalIgnoreCase))
+=======
+            // /tp と /name と /sumo はオプションにより /cmd なしでも一般プレイヤーから受け付ける
+            if (args[0].Equals("/tp", StringComparison.OrdinalIgnoreCase) || args[0].Equals("/name", StringComparison.OrdinalIgnoreCase) || args[0].Equals("/sumo", StringComparison.OrdinalIgnoreCase))
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
             {
                 // 下で個別処理するのでここでは通す
             }
@@ -1389,8 +1407,14 @@ namespace TownOfHost
             }
             if (args[0].StartsWith("/cmd") is false
                 && !args[0].Equals("/tp", StringComparison.OrdinalIgnoreCase)
+<<<<<<< HEAD
                 && !args[0].Equals("/name", StringComparison.OrdinalIgnoreCase))
                 return;//cmdが無い場合は処理をしない（/tp /name は例外）
+=======
+                && !args[0].Equals("/name", StringComparison.OrdinalIgnoreCase)
+                && !args[0].Equals("/sumo", StringComparison.OrdinalIgnoreCase))
+                return;//cmdが無い場合は処理をしない（/tp /name /sumo は例外）
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 
             if (GuessManager.GuesserMsg(player, text)) { canceled = true; return; }
 
@@ -1402,7 +1426,11 @@ namespace TownOfHost
                 args = args.Skip(1).ToArray();
                 if (args[0].StartsWith("/") is false) args[0] = $"/{args[0]}";
             }
+<<<<<<< HEAD
             else if (args[0] != "/tp" && args[0] != "/name" && (args[0] != "/cmd" || args.Length <= 1))
+=======
+            else if (args[0] != "/tp" && args[0] != "/name" && args[0] != "/sumo" && (args[0] != "/cmd" || args.Length <= 1))
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
             {
                 return;
             }
@@ -1616,6 +1644,19 @@ namespace TownOfHost
                         }
                     }
                     break;
+<<<<<<< HEAD
+=======
+                case "/sumo":
+                    canceled = true;
+                    if (!Options.SumoCommandEnabled.GetBool())
+                    {
+                        SendMessage(GetString("SumoCommand.Disabled"), player.PlayerId);
+                        break;
+                    }
+                    subArgs = args.Length < 2 ? "" : string.Join(" ", args.Skip(1)).Trim();
+                    SumoAI.Reply(player, subArgs);
+                    break;
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
                 case "/kf":
                     canceled = true;
                     if (GameStates.InGame)

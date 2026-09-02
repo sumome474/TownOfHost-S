@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -802,6 +803,8 @@ public static class CheckClassicTexOnEnabletPatch
             __instance.reportedText.gameObject.SetActive(false);
     }
 =======
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -1603,5 +1606,8 @@ public static class CheckClassicTexOnEnabletPatch
         if (DateTime.Now.Month is 4 && AprilFoolsMode.IsAprilFoolsModeToggledOn && AprilFoolsMode.ShouldClassicMode())
             __instance.reportedText.gameObject.SetActive(false);
     }
+<<<<<<< HEAD
 >>>>>>> 8a3e0960256c17ae5eb2775e360df238507980b5
+=======
+>>>>>>> c31591e8 (TownOfHost-S正式リリース開始)
 }
